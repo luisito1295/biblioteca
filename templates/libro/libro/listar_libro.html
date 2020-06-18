@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+
+{% block titulo %}
+Biblioteca.dev | Listado de Libros
+{% endblock titulo %}
+
+{% block body %}
+<div>
+  <button class="btn btn-primary" type="button" onclick="abrir_modal_creacion('{% url 'libro:crear_libro' %}')">Crear Libro</button>
+</div>
+{% if libros %}
+<div class="card">
+  <div class="card-header">
+    <strong class="card-title">Listado de Libros</strong>
+  </div>
+  <div class="table-stats order-table ov-h">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titulo</th>
+          <th>Autor</th>
+          <th>Fecha de Publicación</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for libro in libros %}
+        <tr>
+          <td>{{ libro.id }}</td>
+          <td>{{ libro.titulo }}</td>
+          <td>
+            {% for autor in libro.autor_id.all %}
+            <li>{{ autor.nombre }}</li>
+            {% endfor %}
+          </td>
+          <td>{{ libro.fecha_publicacion }}</td>
+          <td>
+            <a href="{% url 'libro:eliminar_libro' libro.id %}" class="btn btn-danger">Eliminar</a>
+            <button onclick="abrir_modal_edicion('{% url 'libro:editar_libro' libro.id %}')" class="btn btn-primary">Editar</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<h1>No existen libros registrados</h1>
+{% endif %}
+
+<div class="modal fade" id="creacion" role="dialog">
+
+</div>
+
+<div class="modal fade" id="edicion" role="dialog">
+
+</div>
+
+{% endblock body %}
